@@ -25,22 +25,21 @@ namespace Domain.Services
             _recipesDescriptRepositories.DeleteAll();
         }
 
-        public Task<int> Create(RecipeJoin recipe)
+        public async Task<int> CreateAsync(RecipeJoin recipe)
         {
-            var recipeDescript = new RecipeDescription
+            var  isertDescriptionTask = _recipesDescriptRepositories.Add(new RecipeDescription
             {
                 Description = recipe.Description
-            };
-            var recipenew = new RecipeWriteModels
+            });
+            var isertRecipeTask = _recipesRepositories.Add(new RecipeWriteModels
             {
                 Name = recipe.Name,
                 Difficulty = recipe.Difficulty,
                 DateCreated = recipe.DateCreated,
                 TimeSpan = recipe.TimeSpan
-            };
-            _recipesDescriptRepositories.Add(recipeDescript);
-            
-            return _recipesRepositories.Add(recipenew);
+            });
+            await Task.WhenAll(isertRecipeTask, isertDescriptionTask);
+            return await isertRecipeTask;
 
         }
 
@@ -50,7 +49,7 @@ namespace Domain.Services
             _recipesDescriptRepositories.Delete(id);
         }
 
-        public async Task EditAsync(int id, string name, string description, int timeSpan)
+        public async Task<int> EditAsync(int id, string name, string description, int timeSpan)
         {
             var allrecipe = await GetAllAsync();
             RecipeWriteModels newrecipe = new RecipeWriteModels();
@@ -74,10 +73,11 @@ namespace Domain.Services
                     };
                 }
             }
-            _recipesRepositories.Edit(newrecipe);
-            _recipesDescriptRepositories.Edit(newrecipeDescription);
+            var editRecipe =_recipesRepositories.Edit(newrecipe);
+            var editRecipeDiscription = _recipesDescriptRepositories.Edit(newrecipeDescription);
+            await Task.WhenAll(editRecipe, editRecipeDiscription);
 
-
+            return await editRecipe;
         }
 
         public Task<IEnumerable<RecipeJoin>> GetAllAsync()

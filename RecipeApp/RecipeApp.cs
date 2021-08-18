@@ -110,11 +110,11 @@ namespace RecipeApp
                             TimeSpan = new TimeSpan(00, timeSpan, 00),
                             DateCreated = DateTime.Now
                         };
-                        var numb = _recipeService.Create(recipeJoinNew);
+                        var numb = _recipeService.CreateAsync(recipeJoinNew);
                         Console.WriteLine($"irase {numb}");
                         break;
                     case "3":
-                        var allrecipesl = await _recipeService.OrderAndShort("timeSpan", "ASC");
+                        var allrecipesl = await _recipeService.GetAllAsync();
                         foreach (var item in allrecipesl)
                         {
                             Console.WriteLine(item.ToString());

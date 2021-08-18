@@ -1,4 +1,5 @@
-﻿using Domain.Services;
+﻿using Domain;
+using Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
 using Persistence;
@@ -16,8 +17,9 @@ namespace RecipeApp
         public IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
-            services.AddPersistence();
-            services.AddSingleton<IRecipeService, RecipeService>();
+            services
+                .AddPersistence()
+                .AddDomain();
             services.AddSingleton<RecipeApp>();
             
             return services.BuildServiceProvider();
