@@ -17,6 +17,7 @@ namespace RecipeApp
         }
         public async void Start()
         {
+            
             Console.WriteLine("|    Your Recipes    |");
             Console.WriteLine("______________________");
             while (true)
@@ -109,7 +110,8 @@ namespace RecipeApp
                             TimeSpan = new TimeSpan(00, timeSpan, 00),
                             DateCreated = DateTime.Now
                         };
-                        _recipeService.Create(recipeJoinNew);
+                        var numb = _recipeService.Create(recipeJoinNew);
+                        Console.WriteLine($"irase {numb}");
                         break;
                     case "3":
                         var allrecipesl = await _recipeService.OrderAndShort("timeSpan", "ASC");

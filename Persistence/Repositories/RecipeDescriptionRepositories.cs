@@ -17,38 +17,39 @@ namespace Persistence.Repositories
             _sqlClient = sqlClient;
             TableName = "recipedescription";
         }
-        public void Add(RecipeDescription item)
+        public Task<int> Add(RecipeDescription item)
         {
             var sql = $"INSERT INTO {TableName} (Description)  VALUES  (@Description)";
-            _sqlClient.Execute(sql, item);
+            return _sqlClient.ExecuteAsync(sql, item);
         }
 
-        public void Delete(int id)
+        public Task<int> Delete(int id)
         {
             var sql = $"DELETE FROM {TableName} WHERE idRecipe = @id";
-            _sqlClient.Execute(sql, new { id });
+            return _sqlClient.ExecuteAsync(sql, new { id });
         }
 
-        public void DeleteAll()
+        public Task<int> DeleteAll()
         {
-            var sql = $"DELETE FROM {TableName}";
-            _sqlClient.Execute(sql);
-            sql = "ALTER TABLE `recipes`.`recipedescription` AUTO_INCREMENT = 1 ";
-            _sqlClient.Execute(sql);
-
+           
+            var sql = "ALTER TABLE `recipes`.`recipedescription` AUTO_INCREMENT = 1 ";
+            _sqlClient.ExecuteAsync(sql);
+            sql = $"DELETE FROM {TableName}";
+            return _sqlClient.ExecuteAsync(sql);
+            
         }
 
-        public void Edit(RecipeDescription itiem)
+        public Task<int> Edit(RecipeDescription itiem)
         {
             var sql = $"UPDATE {TableName} SET Description = @Description WHERE IdRecipe = @IdRecipe";
             var parametr = new { itiem.Description, itiem.IdRecipe };
-            _sqlClient.Execute(sql, parametr);
+            return _sqlClient.ExecuteAsync(sql, parametr);
         }
 
         public Task<IEnumerable<T>> GetAll<T>()
         {
             var sql = $"SELECT * FROM {TableName}";
-            return _sqlClient.Query<T>(sql);
+            return _sqlClient.QueryAsync<T>(sql);
         }
     }
 }

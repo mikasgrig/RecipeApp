@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Persistence.Models.WriteModels;
 
 namespace Persistence.Repositories
 {
@@ -17,32 +18,33 @@ namespace Persistence.Repositories
             _sqlClient = sqlClient;
             TableName = "recipes";
         }
-        public void Add(Recipe item)
+        public Task<int> Add(RecipeWriteModels item)
         {
             var sql = $"INSERT INTO {TableName} (Name, Difficulty, TimeSpan, DateCreated)  VALUES  (@Name, @Difficulty, @TimeSpan, @DateCreated)";
-            _sqlClient.Execute(sql, item);
+            return _sqlClient.ExecuteAsync(sql, item);
         }
 
-        public void Delete(int id)
+        public Task<int> Delete(int id)
         {
             var sql = $"DELETE FROM {TableName} WHERE id = @id";
-            _sqlClient.Execute(sql, new { id });
+            return _sqlClient.ExecuteAsync(sql, new { id });
         }
 
-        public void DeleteAll()
+        public Task<int> DeleteAll()
         {
-            var sql = $"DELETE FROM {TableName}";
-            _sqlClient.Execute(sql);
-            sql = "ALTER TABLE `recipes`.`recipes` AUTO_INCREMENT = 1 ";
-            _sqlClient.Execute(sql);
+            
+            var sql = "ALTER TABLE `recipes`.`recipes` AUTO_INCREMENT = 1 ";
+            _sqlClient.ExecuteAsync(sql);
+            sql = $"DELETE FROM {TableName}";
+            return _sqlClient.ExecuteAsync(sql);
         }
 
-        public void Edit(Recipe itiem)
+        public Task<int> Edit(RecipeWriteModels itiem)
         {
 
             var sql = $"UPDATE {TableName} SET Name = @Name, timeSpan = @timeSpan WHERE id = @id";
             var parametr = new { itiem.Name, itiem.TimeSpan, itiem.Id };
-            _sqlClient.Execute(sql, parametr);
+            return _sqlClient.ExecuteAsync(sql, parametr);
         }
 
         public Task<IEnumerable<T>> GetAll<T>()
@@ -50,7 +52,7 @@ namespace Persistence.Repositories
             var sql = @$"SELECT *
                       FROM recipes
                       INNER JOIN recipedescription ON recipes.id = recipedescription.idRecipe";
-            return _sqlClient.Query<T>(sql);
+            return _sqlClient.QueryAsync<T>(sql);
         }
         public Task<IEnumerable<T>> OrderAndShort<T>(string type, string shortCustomer)
         {
@@ -58,7 +60,7 @@ namespace Persistence.Repositories
                       FROM recipes
                       INNER JOIN recipedescription ON recipes.id = recipedescription.idRecipe
                       ORDER BY {type} {shortCustomer}";
-            return _sqlClient.Query<T>(sql);
+            return _sqlClient.QueryAsync<T>(sql);
         }
     }
 }

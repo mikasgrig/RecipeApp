@@ -14,13 +14,13 @@ namespace Persistence
           
             _connectionString = connectionString;
         }
-        public Task<int> Execute(string sql, object parametr = null)
+        public Task<int> ExecuteAsync(string sql, object parametr = null)
         {
             using var connection = new MySqlConnection(_connectionString);
             return connection.ExecuteAsync(sql, parametr);
         }
 
-        public Task<IEnumerable<T>> Query<T>(string sql, object parametr = null)
+        public Task<IEnumerable<T>> QueryAsync<T>(string sql, object parametr = null)
         {
             using var connection = new MySqlConnection(_connectionString);
             return connection.QueryAsync<T>(sql, parametr);

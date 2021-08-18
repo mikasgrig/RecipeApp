@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Persistence.Models;
+using Persistence.Models.WriteModels;
 using Persistence.Repositories;
 using System;
 using System.Collections.Generic;
@@ -24,13 +25,13 @@ namespace Domain.Services
             _recipesDescriptRepositories.DeleteAll();
         }
 
-        public void Create(RecipeJoin recipe)
+        public Task<int> Create(RecipeJoin recipe)
         {
             var recipeDescript = new RecipeDescription
             {
                 Description = recipe.Description
             };
-            var recipenew = new Recipe
+            var recipenew = new RecipeWriteModels
             {
                 Name = recipe.Name,
                 Difficulty = recipe.Difficulty,
@@ -38,7 +39,8 @@ namespace Domain.Services
                 TimeSpan = recipe.TimeSpan
             };
             _recipesDescriptRepositories.Add(recipeDescript);
-            _recipesRepositories.Add(recipenew);
+            
+            return _recipesRepositories.Add(recipenew);
 
         }
 
@@ -51,13 +53,13 @@ namespace Domain.Services
         public async Task EditAsync(int id, string name, string description, int timeSpan)
         {
             var allrecipe = await GetAllAsync();
-            Recipe newrecipe = new Recipe();
+            RecipeWriteModels newrecipe = new RecipeWriteModels();
             RecipeDescription newrecipeDescription = new RecipeDescription();
             foreach (var item in allrecipe)
             {
                 if (item.Id == id)
                 {
-                    newrecipe = new Recipe
+                    newrecipe = new RecipeWriteModels
                     {
                         Id = item.Id,
                         DateCreated = item.DateCreated,

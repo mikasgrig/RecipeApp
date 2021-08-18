@@ -8,7 +8,7 @@ namespace Persistence
 {
     public interface ISqlClient
     {
-        Task<int> Execute(string sql, object parametr = null);
-        Task<IEnumerable<T>> Query<T>(string sql, object parametr = null);
+        Task<int> ExecuteAsync(string sql, object parametr = null);
+        Task<IEnumerable<T>> QueryAsync<T>(string sql, object parametr = null);
     }
 }

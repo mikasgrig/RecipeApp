@@ -5,20 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persistence.Models
+namespace Persistence.Models.WriteModels
 {
-    public class Recipe
+    public class RecipeWriteModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Difficulty { get; set; }
         public TimeSpan TimeSpan { get; set; }
         public DateTime DateCreated { get; set; }
-
-
-        public override string ToString()
-        {
-            return $"Id: {Id}  Name: {Name}  Date Crate: {DateCreated}";
-        }
     }
 }

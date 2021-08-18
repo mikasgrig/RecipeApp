@@ -10,10 +10,10 @@ namespace Persistence.Repositories
     public interface IRecipeDescriptionRepositories
     {
         Task<IEnumerable<T>> GetAll<T>();
-        void Add(RecipeDescription item);
-        void Edit(RecipeDescription itiem);
-        void Delete(int id);
-        void DeleteAll();
+        Task<int> Add(RecipeDescription item);
+        Task<int> Edit(RecipeDescription itiem);
+        Task<int> Delete(int id);
+        Task<int> DeleteAll();
 
     }
 }

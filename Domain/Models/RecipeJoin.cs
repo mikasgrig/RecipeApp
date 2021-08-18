@@ -14,7 +14,7 @@ namespace Domain.Models
         public string Difficulty { get; set; }
         public TimeSpan TimeSpan { get; set; }
         public DateTime DateCreated { get; set; }
-        public int IdRecipeDescription { get; set; }
+        public int IdRecipe { get; set; }
         public string Description { get; set; }
 
         public override string ToString()
