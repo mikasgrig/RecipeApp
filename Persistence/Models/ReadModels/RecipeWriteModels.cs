@@ -12,7 +12,7 @@ namespace Persistence.Models.ReadModels
         public int Id { get; set; }
         public string Name { get; set; }
         public string Difficulty { get; set; }
-        public TimeSpan TimeSpan { get; set; }
+        public TimeSpan TimeToComplete { get; set; }
         public DateTime DateCreated { get; set; }
     }
 }

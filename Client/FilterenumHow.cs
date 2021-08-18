@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Contract
 {
-    public class Filter
+    public enum FilterenumHow
     {
-        public string OrderBy { get; set; }
-        public string OrderHow { get; set; }
+        Asc = 1,
+        Desc = 2
     }
 }

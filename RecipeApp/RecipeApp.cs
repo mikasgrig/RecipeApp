@@ -17,7 +17,8 @@ namespace RecipeApp
         }
         public async void Start()
         {
-            
+            int chooseHow;
+            int chooseBy;
             Console.WriteLine("|    Your Recipes    |");
             Console.WriteLine("______________________");
             while (true)
@@ -33,60 +34,19 @@ namespace RecipeApp
                 switch (choose)
                 {
                     case "1":
-                        Console.WriteLine("Pres 1 Order by: TimeToComplete");
-                        Console.WriteLine("Pres 2 Order by: DateCreated");
-                        choose = (Console.ReadLine());
-                        switch (choose)
-                        {
-                            case "1":
-                                Console.WriteLine("Pres 1 Sorting by: Ascending");
-                                Console.WriteLine("Pres 2 Sorting by: Descending");
-                                choose = (Console.ReadLine());
-                                switch (choose)
-                                {
-                                    case "1":
-                                        Console.WriteLine("Choose TimeTocomlete by Ascending");
-                                        var allrecipes = await _recipeService.OrderAndShort("timeSpan", "ASC");
-                                        foreach (var item in allrecipes)
-                                        {
-                                            Console.WriteLine(item.ToString());
-                                        }
-                                        break;
-                                    case "2":
-                                        Console.WriteLine("Choose TimeTocomlete by Descending");
-                                        allrecipes = await _recipeService.OrderAndShort("timeSpan", "DESC");
-                                        foreach (var item in allrecipes)
-                                        {
-                                            Console.WriteLine(item.ToString());
-                                        }
-                                        break;
-                                }
-                                break;
-                            case "2":
-                                Console.WriteLine("Pres 1 Sorting by: Ascending");
-                                Console.WriteLine("Pres 2 Sorting by: Descending");
-                                choose = (Console.ReadLine());
-                                switch (choose)
-                                {
-                                    case "1":
-                                        Console.WriteLine("Choose DateCreated by Ascending");
-                                        var allrecipes = await _recipeService.OrderAndShort("dateCreated", "ASC");
-                                        foreach (var item in allrecipes)
-                                        {
-                                            Console.WriteLine(item.ToString());
-                                        }
-                                        break;
-                                    case "2":
-                                        Console.WriteLine("Choose DateCreated by Descending");
-                                        allrecipes = await _recipeService.OrderAndShort("dateCreated", "DESC");
-                                        foreach (var item in allrecipes)
-                                        {
-                                            Console.WriteLine(item.ToString());
-                                        }
-                                        break;
-                                }
-                                break;                        
-                        }
+                        Console.WriteLine("Order by:");
+                        foreach (string s in Enum.GetNames(typeof(Contract.Filterenum)))
+                            Console.WriteLine(s);
+                        chooseHow = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Sorting by:");
+                        foreach (string s in Enum.GetNames(typeof(Contract.FilterenumHow)))
+                            Console.WriteLine(s);
+                        chooseBy = Convert.ToInt32(Console.ReadLine());
+                        var chooseHow1 = Enum.GetName(typeof(Contract.Filterenum), chooseBy);
+                        var chooseBy1 = Enum.GetName(typeof(Contract.FilterenumHow), chooseBy);
+                        var newList = await _recipeService.OrderAndShort(chooseHow1, chooseBy1);
+                        foreach (var s in newList)
+                            Console.WriteLine(s);
                         break;
                     case "2":
                         Console.Write("Enter recipe Name: ");
@@ -107,7 +67,7 @@ namespace RecipeApp
                             Name = name,
                             Description = description,
                             Difficulty = Enum.GetName(typeof(Contract.Difficulty), difficulty),
-                            TimeSpan = new TimeSpan(00, timeSpan, 00),
+                            TimeToComplete = new TimeSpan(00, timeSpan, 00),
                             DateCreated = DateTime.Now
                         };
                         var numb = _recipeService.CreateAsync(recipeJoinNew);

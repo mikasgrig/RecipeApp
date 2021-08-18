@@ -36,7 +36,7 @@ namespace Domain.Services
                 Name = recipe.Name,
                 Difficulty = recipe.Difficulty,
                 DateCreated = recipe.DateCreated,
-                TimeSpan = recipe.TimeSpan
+                TimeToComplete = recipe.TimeToComplete
             });
             await Task.WhenAll(isertRecipeTask, isertDescriptionTask);
             return await isertRecipeTask;
@@ -64,7 +64,7 @@ namespace Domain.Services
                         DateCreated = item.DateCreated,
                         Difficulty = item.Difficulty,
                         Name = name,
-                        TimeSpan = new TimeSpan(00, timeSpan, 00)
+                        TimeToComplete = new TimeSpan(00, timeSpan, 00)
                     };
                     newrecipeDescription = new RecipeDescription
                     {

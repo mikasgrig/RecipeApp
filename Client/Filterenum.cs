@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Contract
 {
-    enum FilterAscDesc
+    public enum Filterenum
     {
-        ASC,
-        DESC
+        TimeToComplete = 1,
+        DateCreated = 2
     }
 }

@@ -43,7 +43,7 @@ namespace Persistence.Repositories
         {
 
             var sql = $"UPDATE {TableName} SET Name = @Name, timeSpan = @timeSpan WHERE id = @id";
-            var parametr = new { itiem.Name, itiem.TimeSpan, itiem.Id };
+            var parametr = new { itiem.Name, itiem.TimeToComplete, itiem.Id };
             return _sqlClient.ExecuteAsync(sql, parametr);
         }
 
